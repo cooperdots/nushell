@@ -1,4 +1,3 @@
-
 $env.config.edit_mode = "vi"
 $env.PROMPT_INDICATOR_VI_NORMAL = $"(ansi magenta)$ "
 $env.PROMPT_INDICATOR_VI_INSERT = { ||
