@@ -8,6 +8,8 @@ $env.PROMPT_INDICATOR_VI_INSERT = { ||
 	$"(ansi xterm_darkorange)& "
 }
 
+$env.PROMPT_COMMAND_RIGHT = ""
+
 $env.PROMPT_COMMAND = { ||
 	let arrowChars = {
 		pass: "‣ "
