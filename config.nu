@@ -14,5 +14,6 @@ plugin use gstat
 
 source prompt.nu
 source aliases.nu
+source keybinds.nu
 
 $env.config.table.missing_value_symbol = "∅"
