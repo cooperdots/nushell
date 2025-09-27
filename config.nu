@@ -8,6 +8,7 @@ $env.config.color_config.filesize = { |x|
 $env.config.color_config.bool = { |x|
 	if $x { 'green' } else { 'light_red' }
 }
+$env.config.table.mode = "single"
 
 plugin add nu_plugin_gstat
 plugin use gstat
