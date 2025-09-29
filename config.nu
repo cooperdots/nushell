@@ -14,3 +14,8 @@ source colortheme.nu
 source functions/f.nu
 
 $env.config.table.missing_value_symbol = "∅"
+$env.config.cursor_shape = {
+	vi_insert: "blink_line"
+	vi_normal: "block"
+	emacs: "blink_underscore"
+}
