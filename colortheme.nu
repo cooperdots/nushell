@@ -6,6 +6,8 @@ $env.config.color_config.filesize = { |x|
 $env.config.color_config.bool = { |x|
 	if $x { 'green' } else { 'light_red' }
 }
+
+$env.config.color_config.shape_internalcall = "blue"
 $env.config.color_config.shape_external = "light_red"
 $env.config.color_config.shape_external_resolved = "yellow"
 $env.config.color_config.shape_flag = "grey"
