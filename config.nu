@@ -11,11 +11,12 @@ $env.config.color_config.bool = { |x|
 $env.config.table.mode = "single"
 
 plugin add nu_plugin_gstat
-plugin use gstat
+plugin add ~/.cargo/bin/nu_plugin_skim
 
 source prompt.nu
 source aliases.nu
 source keybinds.nu
+source completion.nu
 source functions/f.nu
 
 $env.config.table.missing_value_symbol = "∅"

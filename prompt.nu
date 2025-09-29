@@ -24,10 +24,10 @@ $env.PROMPT_COMMAND = { ||
 			$arrowChar = $arrowChars.pass
 			$arrowColor = (ansi green)
 		}
-		-2 => {
+		-2 | 130 => {
 			$arrowChar = $arrowChars.term
 			$arrowColor = (ansi red)
-			$errorCode = $"($env.LAST_EXIT_CODE) "
+			# $errorCode = $"($env.LAST_EXIT_CODE) "
 		}
 		_ => {
 			$arrowChar = $arrowChars.fail
