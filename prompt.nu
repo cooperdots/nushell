@@ -1,8 +1,8 @@
 $env.config.edit_mode = "vi"
 $env.PROMPT_INDICATOR_VI_NORMAL = $"(ansi magenta)$ "
 $env.PROMPT_INDICATOR_VI_INSERT = { ||
-	if (is-admin) {
-		return $"(ansi red)# "
+	if (try { sudo -n true err> /dev/null; true } catch { false }) {
+		return $"(ansi light_red)# "
 	}
 	$"(ansi xterm_darkorange)& "
 }
@@ -24,15 +24,15 @@ $env.PROMPT_COMMAND = { ||
 	match $env.LAST_EXIT_CODE {
 		0 => {
 			$arrowChar = $arrowChars.pass
-			$arrowColor = (ansi green)
+			$arrowColor = (ansi light_green)
 		}
 		-2 | 130 => {
 			$arrowChar = $arrowChars.term
-			$arrowColor = (ansi red)
+			$arrowColor = (ansi light_red)
 		}
 		_ => {
 			$arrowChar = $arrowChars.fail
-			$arrowColor = (ansi red)
+			$arrowColor = (ansi light_red)
 			$errorCode = $"($env.LAST_EXIT_CODE) "
 		}
 	}
