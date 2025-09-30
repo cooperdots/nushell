@@ -52,11 +52,10 @@ $env.PROMPT_COMMAND = { ||
 		["/", ..$rest] => ("/" + (format-path $rest | path join))
 	}
 
-	mut branch = gstat | get branch
-	$branch = if ($branch != "no_branch") {
-		$"(ansi magenta) ($branch)"
-	} else {
-		""
+	let branch = try { git branch --show-current err> /dev/null } catch { "" }
+	let branch = match $branch {
+		"" => ""
+		$branch => $"(ansi magenta) ($branch)"
 	}
 
 	let line1 = [$arrowColor " ┌ "]
