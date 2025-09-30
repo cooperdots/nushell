@@ -7,6 +7,8 @@ $env.PROMPT_INDICATOR_VI_INSERT = { ||
 	$"(ansi xterm_darkorange)& "
 }
 
+$env.PROMPT_MULTILINE_INDICATOR = $"(ansi grey)    │ "
+$env.TRANSIENT_PROMPT_MULTILINE_INDICATOR = $"(ansi grey)    │ "
 $env.PROMPT_COMMAND_RIGHT = ""
 
 $env.PROMPT_COMMAND = { ||
@@ -27,7 +29,6 @@ $env.PROMPT_COMMAND = { ||
 		-2 | 130 => {
 			$arrowChar = $arrowChars.term
 			$arrowColor = (ansi red)
-			# $errorCode = $"($env.LAST_EXIT_CODE) "
 		}
 		_ => {
 			$arrowChar = $arrowChars.fail
