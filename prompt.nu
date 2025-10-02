@@ -52,7 +52,10 @@ $env.PROMPT_COMMAND = { ||
 		["/", ..$rest] => ("/" + (format-path $rest | path join))
 	}
 
-	let branch = try { git branch --show-current err> /dev/null } catch { "" }
+	let branch = match (try { $env.OS }) {
+		"Windows_NT" => (try { git branch --show-current err> NUL } catch { "" })
+		_ => (try { git branch --show-current err> /dev/null } catch { "" })
+	}
 	let branch = match $branch {
 		"" => ""
 		$branch => $"(ansi magenta) ($branch)"
