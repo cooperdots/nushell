@@ -13,6 +13,8 @@ source completion.nu
 source colortheme.nu
 source functions/f.nu
 
+$env.config.history.file_format = "sqlite"
+$env.config.completions.algorithm = "fuzzy"
 $env.config.table.missing_value_symbol = "∅"
 $env.config.cursor_shape = {
 	vi_insert: "blink_line"
