@@ -12,6 +12,8 @@ source keybinds.nu
 source completion.nu
 source colortheme.nu
 source functions/f.nu
+source completions/git.nu
+source completions/cargo.nu
 
 $env.config.history.file_format = "sqlite"
 $env.config.completions.algorithm = "fuzzy"
