@@ -52,20 +52,11 @@ $env.PROMPT_COMMAND = { ||
 		["/", ..$rest] => ("/" + (format-path $rest | path join))
 	}
 
-	let branch = match (try { $env.OS }) {
-		"Windows_NT" => (try { git branch --show-current err> NUL } catch { "" })
-		_ => (try { git branch --show-current err> /dev/null } catch { "" })
-	}
-	let branch = match $branch {
-		"" => ""
-		$branch => $"(ansi magenta) ($branch)"
-	}
-
 	let line1 = [$arrowColor " ┌ "]
 	let line1 = $line1 ++ [$duration]
 	let line1 = $line1 ++ [$time]
 	let line1 = $line1 ++ [(ansi blue) $path " "]
-	let line1 = $line1 ++ [$branch]
+	let line1 = $line1 ++ [(git_prompt)]
 
 	let line2 = [$arrowColor " └" $arrowChar]
 	let line2 = $line2 ++ [$errorCode]
@@ -84,5 +75,48 @@ def format-path [path] {
 			let cutoff = if ($item.item | str starts-with ".") { 1 } else { 0 }
 			$item.item | str substring ..$cutoff
 		}
+	}
+}
+
+def git_prompt [] {
+	let in_git = (git rev-parse --git-dir err> /dev/null | complete | get exit_code)
+	if $in_git != 0 { return "" }
+
+	# Grab .git directory
+	let git_dir = (git rev-parse --git-dir | str trim)
+
+	# branch or detached HEAD
+	let branch = match (try { $env.OS }) {
+		"Windows_NT" => (
+			try { git symbolic-ref --short HEAD err> NUL }
+			catch { git rev-parse --short HEAD }
+		)
+		_ => (
+			try { git symbolic-ref --short HEAD err> /dev/null }
+			catch { git rev-parse --short HEAD }
+		)
+	}
+
+	# Detect states
+	if ($git_dir | path join "MERGE_HEAD" | path exists) {
+		return $"(ansi magenta) ($branch) (ansi red)[MERGING]"
+	} else if ($git_dir | path join "CHERRY_PICK_HEAD" | path exists) {
+		return $"(ansi magenta) ($branch) [CHERRY-PICKING]"
+	} else if ($git_dir | path join "REVERT_HEAD" | path exists) {
+		return $"(ansi magenta) ($branch) (ansi red)[REVERTING]"
+	} else if ($git_dir | path join "BISECT_LOG" | path exists) {
+		return $"(ansi magenta) ($branch) (ansi green)[BISECTING]"
+	} else if ($git_dir | path join "rebase-merge" | path exists) {
+		let step  = open ($git_dir | path join "rebase-merge/msgnum") | str trim
+		let total = open ($git_dir | path join "rebase-merge/end") | str trim
+		let branch = open ($git_dir | path join "rebase-merge/head-name")
+			| split row "/" | get 2
+		return $"(ansi magenta) ($branch) (ansi yellow)[REBASE ($step)/($total)]"
+	} else if ($git_dir | path join "rebase-apply" | path exists) {
+		let branch = open ($git_dir | path join "rebase-merge/head-name")
+			| split row "/" | get 2
+		return $"(ansi magenta) ($branch) (ansi yellow)[AM/REBASE-APPLY]"
+	} else {
+		return $"(ansi magenta) ($branch)"
 	}
 }
