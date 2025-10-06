@@ -3,9 +3,6 @@ $env.config.buffer_editor = "nvim"
 $env.config.show_banner = false
 $env.config.table.mode = "single"
 
-plugin add nu_plugin_gstat
-plugin add ~/.cargo/bin/nu_plugin_skim
-
 source prompt.nu
 source aliases.nu
 source keybinds.nu
