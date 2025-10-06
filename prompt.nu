@@ -79,7 +79,10 @@ def format-path [path] {
 }
 
 def git_prompt [] {
-	let in_git = (git rev-parse --git-dir err> /dev/null | complete | get exit_code)
+	let in_git = match (try { $env.OS }) {
+		"Windows_NT" => (git rev-parse --git-dir err> NUL | complete | get exit_code)
+		_ => (git rev-parse --git-dir err> /dev/null | complete | get exit_code)
+	}
 	if $in_git != 0 { return "" }
 
 	# Grab .git directory
